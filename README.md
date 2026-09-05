@@ -87,3 +87,33 @@ Standard computer vision approaches focus on binary classification: `Violation =
                          │   Human Steward Decision  │
                          │ [ Confirm / Dismiss / Log]│
                          └───────────────────────────┘
+##
+aegistrack-ai/
+├── public/                 # Static track definitions and SVGs
+├── src/
+│   ├── assets/             # Vector icons and project assets
+│   ├── components/
+│   │   ├── layout/         # Shell navigation, header, status badges
+│   │   ├── dashboard/      # Telemetry overviews, metric stat cards
+│   │   ├── incidents/      # Triage queue, filters, severity indicators
+│   │   ├── evidence/       # Multi-sensor fusion cards and gauges
+│   │   ├── explanation/    # "Show Me Why" explainability components
+│   │   ├── replay/         # Synchronized frame scrubbers & markers
+│   │   ├── track/          # Vector circuit maps & corner risk overlays
+│   │   ├── analytics/      # Delta charts, excursion distribution plots
+│   │   ├── steward/        # Adjudication modals and decision logs
+│   │   └── ui/             # Reusable design components (cards, tabs, buttons)
+│   ├── pages/              # Primary views (Dashboard, Incidents, Reports, Settings)
+│   ├── data/               # Deterministic telemetry fixtures and mock models
+│   ├── services/           # Service layer designed for future API drop-in
+│   ├── types/              # TypeScript definitions for incidents & telemetry
+│   ├── hooks/              # Custom UI and keyboard interaction hooks
+│   ├── utils/              # Conversion utilities and formatting helpers
+│   ├── App.tsx             # Root routing layout
+│   ├── main.tsx            # Client entry point
+│   └── index.css           # Tailwind base styles and theme overrides
+├── package.json            # Scripts and dependencies
+├── vite.config.ts          # Vite bundler configuration
+├── tailwind.config.js      # Design tokens and theme configuration
+├── tsconfig.json           # Strict TypeScript configuration
+└── README.md
