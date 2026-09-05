@@ -51,69 +51,56 @@ Standard computer vision approaches focus on binary classification: `Violation =
 
 ## 🧠 System Architecture
 
-```text
-[ Broadcast / Vision ]  [ Telemetry ]  [ CAD Geometry ]  [ Ingested GPS ]  [ Timing Feeds ]
-          │                   │                 │                │                 │
-          └───────────────────┴────────┬────────┴────────────────┴─────────────────┘
-                                       ▼
-                         ┌───────────────────────────┐
-                         │   Evidence Fusion Engine  │ (Planned)
-                         └─────────────┬─────────────┘
-                                       ▼
-       ┌───────────────────────────────┴───────────────────────────────┐
-       ▼                                                               ▼
-┌───────────────────────────┐                            ┌───────────────────────────┐
-│     Confidence Engine     │                            │ Context & Conflict Engine │
-│  (Bayesian Calibration)   │                            │  (Multi-Signal Alignment) │
-└──────────────┬────────────┘                            └─────────────┬─────────────┘
-               └───────────────────────┬───────────────────────────────┘
-                                       ▼
-                         ┌───────────────────────────┐
-                         │   Explainability Module   │
-                         │    ("Show Me Why" Logs)   │
-                         └─────────────┬─────────────┘
-                                       ▼
-                         ┌───────────────────────────┐
-                         │  Incident Priority Engine │
-                         │    (Dynamic Queue IPS)    │
-                         └─────────────┬─────────────┘
-                                       ▼
-                         ┌───────────────────────────┐
-                         │   Steward Copilot UI      │ ◄── [CURRENT PROTOTYPE]
-                         │  (Interactive Review)     │
-                         └─────────────┬─────────────┘
-                                       ▼
-                         ┌───────────────────────────┐
-                         │   Human Steward Decision  │
-                         │ [ Confirm / Dismiss / Log]│
-                         └───────────────────────────┘
-##
-aegistrack-ai/
-├── public/                 # Static track definitions and SVGs
-├── src/
-│   ├── assets/             # Vector icons and project assets
-│   ├── components/
-│   │   ├── layout/         # Shell navigation, header, status badges
-│   │   ├── dashboard/      # Telemetry overviews, metric stat cards
-│   │   ├── incidents/      # Triage queue, filters, severity indicators
-│   │   ├── evidence/       # Multi-sensor fusion cards and gauges
-│   │   ├── explanation/    # "Show Me Why" explainability components
-│   │   ├── replay/         # Synchronized frame scrubbers & markers
-│   │   ├── track/          # Vector circuit maps & corner risk overlays
-│   │   ├── analytics/      # Delta charts, excursion distribution plots
-│   │   ├── steward/        # Adjudication modals and decision logs
-│   │   └── ui/             # Reusable design components (cards, tabs, buttons)
-│   ├── pages/              # Primary views (Dashboard, Incidents, Reports, Settings)
-│   ├── data/               # Deterministic telemetry fixtures and mock models
-│   ├── services/           # Service layer designed for future API drop-in
-│   ├── types/              # TypeScript definitions for incidents & telemetry
-│   ├── hooks/              # Custom UI and keyboard interaction hooks
-│   ├── utils/              # Conversion utilities and formatting helpers
-│   ├── App.tsx             # Root routing layout
-│   ├── main.tsx            # Client entry point
-│   └── index.css           # Tailwind base styles and theme overrides
-├── package.json            # Scripts and dependencies
-├── vite.config.ts          # Vite bundler configuration
-├── tailwind.config.js      # Design tokens and theme configuration
-├── tsconfig.json           # Strict TypeScript configuration
-└── README.md
+```mermaid
+%%{init: {'theme': 'dark', 'themeVariables': { 'darkMode': true, 'primaryColor': '#1e293b', 'primaryTextColor': '#f8fafc', 'primaryBorderColor': '#38bdf8', 'lineColor': '#00C7B7', 'secondaryColor': '#0f172a', 'tertiaryColor': '#020617'}}}%%
+flowchart TD
+    subgraph SENSORS [" 📡 MULTI-MODAL DATA INGESTION "]
+        direction LR
+        S1["🎥 Broadcast Feeds"]
+        S2["🏎️ Wheel Contacts"]
+        S3["🗺️ CAD Geometry"]
+        S4["📍 Telemetry / GPS"]
+    end
+
+    SENSORS --> ENGINE
+
+    subgraph ENGINE [" ⚙️ AEGIS REASONING & FUSION CORE (Planned) "]
+        direction TB
+        E1["🔄 Multi-Source Evidence Fusion"]
+        E2["⚖️ Bayesian Confidence Engine"]
+        E3["⚠️ Sensor Conflict Detector"]
+        E4["🧩 'Show Me Why' Explainability"]
+        
+        E1 --> E2
+        E1 --> E3
+        E2 & E3 --> E4
+    end
+
+    ENGINE --> QUEUE["📊 Dynamic Incident Priority Queue (IPS)"]
+
+    subgraph COPILOT [" 🖥️ STEWARD COPILOT DESK (Active Prototype) "]
+        direction TB
+        UI1["🔍 Synchronized Frame-Scrubber Replay"]
+        UI2["📋 Auditable Evidence Verification Checklist"]
+    end
+
+    QUEUE --> COPILOT
+
+    subgraph DECISION [" 👤 HUMAN-IN-THE-LOOP ADJUDICATION "]
+        direction LR
+        D1["✅ Confirm Breach"]
+        D2["❌ Dismiss"]
+        D3["📝 Log for Inquiry"]
+    end
+
+    COPILOT ==> DECISION
+
+    classDef sensorStyle fill:#0f172a,stroke:#38bdf8,stroke-width:1.5px,color:#e2e8f0;
+    classDef engineStyle fill:#1e293b,stroke:#00C7B7,stroke-width:2px,color:#ffffff;
+    classDef activeStyle fill:#134e4a,stroke:#2dd4bf,stroke-width:2.5px,color:#f0fdfa;
+    classDef humanStyle fill:#312e81,stroke:#818cf8,stroke-width:2px,color:#e0e7ff;
+
+    class S1,S2,S3,S4 sensorStyle;
+    class E1,E2,E3,E4,QUEUE engineStyle;
+    class UI1,UI2 activeStyle;
+    class D1,D2,D3 humanStyle;
